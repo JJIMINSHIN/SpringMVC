@@ -4,22 +4,24 @@ import javax.servlet.Filter;
 
 import org.springframework.web.filter.CharacterEncodingFilter;
 import org.springframework.web.servlet.support.AbstractAnnotationConfigDispatcherServletInitializer;
-
-public class WebConfig extends AbstractAnnotationConfigDispatcherServletInitializer {
+// web.xml
+public class WebConfig extends AbstractAnnotationConfigDispatcherServletInitializer{
 
 	@Override
 	protected Class<?>[] getRootConfigClasses() {
-		return new Class[] { RootConfig.class, SecurityConfig.class };
+		// TODO Auto-generated method stub
+		return new Class[] { RootConfig.class, SecurityConfig.class  };
 	}
 
 	@Override
 	protected Class<?>[] getServletConfigClasses() {
+		// TODO Auto-generated method stub
 		return new Class[] { ServletConfig.class };
 	}
 
 	@Override
 	protected String[] getServletMappings() {
-		// root부터 실행되도록 설정
+		// TODO Auto-generated method stub
 		return new String[] { "/" };
 	}
 
@@ -27,8 +29,9 @@ public class WebConfig extends AbstractAnnotationConfigDispatcherServletInitiali
 	protected Filter[] getServletFilters() {
 		CharacterEncodingFilter encodingFilter = new CharacterEncodingFilter();
 		encodingFilter.setEncoding("UTF-8");
-		encodingFilter.setForceEncoding(true);
-		return new Filter[] { encodingFilter };
+		encodingFilter.setForceEncoding(true);		
+		return new Filter[]{encodingFilter};
 	}
 
+	
 }

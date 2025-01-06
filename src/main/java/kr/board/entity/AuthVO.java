@@ -4,8 +4,7 @@ import lombok.Data;
 
 @Data
 public class AuthVO {
-	private int no;
-	private String memID;
-	private String auth; //user, manager. admin 3가지 권한 부여
-	
+	private int no; // 일련번호
+	private String memID; //회원 아이디
+	private String auth; // 회원권한(3가지 부여 , ROLE_USER, ROLE_MANAGER, ROLE_ADMIN)
 }
