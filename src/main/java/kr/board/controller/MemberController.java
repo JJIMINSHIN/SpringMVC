@@ -10,6 +10,7 @@ import javax.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -124,35 +125,13 @@ public class MemberController {
 		return "redirect:/";
 	}
 
-	// 로그인 처리
+	// 로그인 처리 (시큐리티와 연관)
 	@RequestMapping("/memLoginForm.do")
 	public String memLoginForm(HttpSession session) {
 		return "member/memLoginForm";
 	}
 
-	// 로그인 기능 구현
-	@RequestMapping("/memLogin.do")
-	public String memLogin(Member m, RedirectAttributes rttr, HttpSession session) {
-		if (m.getMemID() == null || m.getMemID().equals("") || m.getMemPassword() == null
-				|| m.getMemPassword().equals("")) {
-			rttr.addFlashAttribute("msgType", "실패 메세지");
-			rttr.addFlashAttribute("msg", "모든 내용을 입력해주세요.");
-			return "redirect:/memLoginForm.do";
-		}
-		Member mvo = memberMapper.memLogin(m);
-		// 암호화한 비밀번호 일치 여부 체크
-		// 기존 pwd 암호화한 pwd
-		if (mvo != null && pwEncoder.matches(m.getMemPassword(), mvo.getMemPassword())) { // 로그인에 성공
-			rttr.addFlashAttribute("msgType", "성공 메세지");
-			rttr.addFlashAttribute("msg", "로그인에 성공했습니다.");
-			session.setAttribute("mvo", mvo); // ${!empty mvo}
-			return "redirect:/"; // 메인
-		} else { // 로그인에 실패
-			rttr.addFlashAttribute("msgType", "실패 메세지");
-			rttr.addFlashAttribute("msg", "다시 로그인 해주세요.");
-			return "redirect:/memLoginForm.do";
-		}
-	}
+	// 로그인 기능 구현 ->security로 분리
 
 	// 회원 정보 수정화면
 	@RequestMapping("/memUpdateForm.do")
@@ -285,5 +264,10 @@ public class MemberController {
 		rttr.addFlashAttribute("msgType", "성공 메세지");
 		rttr.addFlashAttribute("msg", "이미지 변경이 성공했습니다.");
 		return "redirect:/";
+	}
+	
+	@GetMapping("/access-denied")
+	public String showAccessDenied() {
+		return "access-denied";
 	}
 }

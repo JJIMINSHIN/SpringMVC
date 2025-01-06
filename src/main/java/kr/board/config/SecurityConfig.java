@@ -25,6 +25,30 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
 		filter.setEncoding("UTF-8");
 		filter.setForceEncoding(true);
 		http.addFilterBefore(filter,CsrfFilter.class);	
+		
+		/*
+		 * 회원 인증 권한 설정
+		 * authorizeRequests() : 권한에 따라 요청 설정
+		 * antMatchers("/") : url 매칭
+		 */
+		http 
+			.authorizeRequests()
+				.antMatchers("/")
+				.permitAll() // 모두 허용
+				.and() //요청 추가
+			.formLogin()
+				.loginPage("/memLoginForm")  //custom url
+				.loginProcessingUrl("/memLogin.do") //spring이 제공하는 인증해줌
+				.permitAll()
+				.and()
+			.logout()
+				.invalidateHttpSession(true)
+				.logoutSuccessUrl("/")
+				.and()
+			.exceptionHandling().accessDeniedPage("/access-denied")
+				;
+			
+			
 	}	
 	
 	/*
